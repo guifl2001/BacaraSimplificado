@@ -5,13 +5,26 @@ from collections import namedtuple
 from itertools import product
 import random
 import time
+import math
 # criando o baralho
 Carta = namedtuple('Carta', ['face', 'naipe'])
 
 faces = {'A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'}
 naipes = {'O', 'P', 'C', 'E'}
 
-baralho = [Carta(face, naipe) for face, naipe in product(faces, naipes)]
+baralho1 = [Carta(face, naipe) for face, naipe in product(faces, naipes)]
+baralho6 = baralho1 * 6
+baralho8 = baralho1 * 8
+
+# Perguntar com quantos baralhos o usuário pretende jogar
+
+b = int(input('Com quantos baralhos você deseja jogar?(1, 6, 8) '))
+if b == 1:
+    baralho = baralho1
+elif b == 6:
+    baralho = baralho6
+elif b == 8:
+    baralho = baralho8
 
 # Perguntar quantas fichas o jogador quer comprar
 Fichas = int(input("Quantas fichas gostaria de adquirir? "))
@@ -162,10 +175,12 @@ while True:
     elif banco == 9 and jogador != 9 or banco > jogador:
         if Apostado == 'banco':
             print('Você ganhou!!! Aqui está suas {0} fichas' .format(
-            round(0.95 * Aposta)))
-            Fichas += round(Aposta * 1.95)
+            math.floor(0.95 * Aposta)))
+            Fichas += math.floor(Aposta * 1.95)
         else:
             print("Você perdeu! A casa sempre sai vencendo.")
+    
+    #Checando se o jogador quer continuar jogando
 
     jogar_mais = input("Vamos mais uma?(S ou N)")
     if jogar_mais == 'N':
