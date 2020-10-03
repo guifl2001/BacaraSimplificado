@@ -1,6 +1,10 @@
+# EP - Design de Software
+# Equipe: Guilherme Fontana
+# Data: 01/10/2020
 from collections import namedtuple
 from itertools import product
 import random
+import time
 # criando o baralho
 Carta = namedtuple('Carta', ['face', 'naipe'])
 
@@ -18,15 +22,24 @@ print("Seu total é de R${0}!" .format(Preco))
 Aposta = int(input("Qual será sua aposta?"))
 if Aposta < 1:
     print("Não tenha medo! Hoje senti que a sorte está do seu lado.")
+    Fichas -= Aposta
 elif Aposta > Fichas:
     Falta = Aposta - Fichas
     r = input("Você não tem todas essas fichas, gostaria de comprar mais {0} fichas?(s ou n) " .format(Falta))
     if r == 's':
         print('Você comprou {0} fichas! Vamos jogar!' .format(Falta))
+        Fichas += Falta
+        Fichas -= Aposta
     else:
         Aposta = int(input("Qual será sua aposta? "))
 else:
     print('Vamos jogar!')
+
+time.sleep(2)
+
+# Perguntar em quem deseja apostar
+
+Apostado = input("Em quem você deseja apostar?(jogador, banco ou empate) ")
 
 # embaralhando e selecionando as cartas dos jogadores
 random.shuffle(baralho)
@@ -34,6 +47,7 @@ random.shuffle(baralho)
 mao_jogador = baralho[0:2]
 mao_banco = baralho[2:4]
 print("Suas cartas são {0}" .format(mao_jogador))
+time.sleep(2)
 print("As cartas do banco são {0}" .format(mao_banco))
 
 # colocando os valores nas do jogador:
@@ -68,11 +82,17 @@ elif int(mao_banco[1][0]) < 10:
     pontu2 = int(mao_banco[1][0])
 banco = pontu1 + pontu2
 
-# Descobrindo o vencedor
+# Definindo a pontuação
 
-if jogador < 6:
+if jogador >= 10:
+    jogador -= 10
+
+if jogador == 9 or jogador == 8:
+    print('O jogador alcançou a pontuação desejada')
+elif jogador < 6:
     print('Você tem {0} pontos. Vamos lhe dar mais uma carta!' .format(jogador))
     mao_jogador += baralho[5]
+    time.sleep(2)
     print("Sua carta é {0}" .format(mao_jogador[2]))
     if mao_jogador[2][0] == 'A':
         pont3 = 1
@@ -81,11 +101,19 @@ if jogador < 6:
     elif int(mao_jogador[2][0]) < 10:
         pont3 = int(mao_jogador[2][0])
     jogador += pont3
+if jogador >= 10:
+    jogador -= 10
+time.sleep(1)
 print("Você tem {0} pontos" .format(jogador))
 
-if banco < 6:
+if banco >= 10:
+    banco -= 10
+if banco == 9 or banco == 8:
+    print('O banco alcançou a pontuação desejada')
+elif banco < 6:
     print('O banco tem {0} pontos. Vamos comprar mais uma carta!' .format(banco))
     mao_banco += baralho[6]
+    time.sleep(2)
     print("A carta do banco é {0}" .format(mao_jogador[2]))
     if mao_banco[2][0] == 'A':
         pont3 = 1
@@ -94,4 +122,29 @@ if banco < 6:
     elif int(mao_banco[2][0]) < 10:
         pont3 = int(mao_banco[2][0])
     banco += pont3
+if banco >= 10:
+    banco -= 10
+time.sleep(1)
 print("O banco tem {0} pontos" .format(banco))
+
+# Definindo o vencedor
+
+time.sleep(2)
+if jogador == 9 and banco != 9 or jogador > banco:
+    if Apostado  == 'jogador':
+        print('Você ganhou!!! Aqui está suas {0} fichas' .format(2 * Aposta))
+        Fichas += Aposta * 2
+    else:
+        print("Você perdeu!")
+elif jogador == banco:
+    if Apostado == 'empate':
+        print('Você ganhou!!! Aqui está suas {0} fichas' .format(9 * Aposta))
+        Fichas += Aposta * 9
+    else:
+        print('Você perdeu!')
+elif banco == 9 or banco > jogador:
+    if Apostado  == 'banco':
+        print('Você ganhou!!! Aqui está suas {0} fichas' .format(round(0.95 * Aposta)))
+        Fichas += round(Aposta * 1.95)
+    else:
+        print("Você perdeu!")
