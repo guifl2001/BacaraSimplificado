@@ -197,20 +197,31 @@ while True:
     while t < j:
         if jogador[t] == 9 and banco != 9 or jogador[t] > banco:
             if Apostado[t] == 'jogador':
-                print('O jogador {0} ganhou!!! Aqui está suas {1} fichas' .format(t + 1, 2 * Aposta[t]))
-                Fichas[t] += Aposta[t] * 2
+                print('O jogador {0} ganhou!!!' .format(t + 1))
+                if baralho == baralho1:
+                    Fichas[t] += math.floor(Aposta[t] * 1.9871)
+                else:
+                    Fichas[t] += math.floor(Aposta[t] * 1.9876)
             else:
                 print("O jogador {0} perdeu! Deveria ter apostado em si mesmo hein?" .format(t + 1))
         elif jogador[t] == banco:
             if Apostado[t] == 'empate':
-                print('O jogador {0} ganhou!!! Aqui está suas {1} fichas' .format(t + 1, 9 * Aposta[t]))
-                Fichas[t] += Aposta[t] * 9
+                print('O jogador {0} ganhou!!!' .format(t + 1))
+                if baralho == baralho1:
+                    Fichas[t] += math.floor(Aposta[t] * 1.8425)
+                elif baralho == baralho6:
+                    Fichas[t] += math.floor(Aposta[t] * 1.8556)
+                else:
+                    Fichas[t] += math.floor(Aposta[t] * 1.8564)
             else:
                 print('O jogador {0} perdeu! O jogo empatou.' .format(t + 1))
         elif banco == 9 and jogador[t] != 9 or banco > jogador[t]:
             if Apostado[t] == 'banco':
-                print('O jogador {0} ganhou!!! Aqui está suas {1} fichas' .format(t + 1, math.floor(0.95 * Aposta[t])))
-                Fichas[t] += math.floor(Aposta[t] * 1.95)
+                print('O jogador {0} ganhou!!!' .format(t + 1))
+                if baralho == baralho1:
+                    Fichas[t] += math.floor(Aposta[t] * 0.95 * 1.9899)
+                else:
+                    Fichas[t] += math.floor(Aposta[t] * 0.95 * 1.9894)
             else:
                 print("O jogador {0} perdeu! A casa sempre sai vencendo." .format(t + 1))
         t += 1
