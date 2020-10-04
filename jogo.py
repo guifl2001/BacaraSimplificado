@@ -146,9 +146,11 @@ while True:
 
     s = 0
     vencedor = False
+    terceira_carta = False
     while s < j:
         if jogador[s] < 6 and b_venceu == False and vencedor == False:
             print('Você tem {0} pontos. Vamos lhe dar mais uma carta!' .format(jogador[s]))
+            terceira_carta = True
             maos_jogadores[s] += baralho[(j + s + 2) * 2]
             time.sleep(2)
             print("Sua carta é {0}" .format(maos_jogadores[s][2]))
@@ -160,17 +162,49 @@ while True:
                 pont3 = int(maos_jogadores[s][2][0])
             jogador[s] += pont3
         if jogador[s] == 9 or jogador[s] == 8 and j_venceu[s] == False:
-                print('O jogador {0} alcançou a pontuação desejada' .format(s + 1))
-                j_venceu[s] = True
-                vencedor = True
+            print('O jogador {0} alcançou a pontuação desejada' .format(s + 1))
+            j_venceu[s] = True
+            vencedor = True
         elif jogador[s] >= 10:
                 jogador[s] -= 10
         time.sleep(1)
         print("O jogador {0} tem {1} pontos" .format(s + 1, jogador[s]))
         s += 1
 
-
-    if banco < 6 and vencedor != True:
+    if banco < 6 and vencedor != True and terceira_carta != True:
+        q = 0
+        if banco < 4 and maos_jogadores[q] != 8:
+            print('O banco tem {0} pontos. Vamos comprar mais uma carta!' .format(banco))
+            mao_banco += baralho[j * 2 + 3]
+            time.sleep(2)
+            print("A carta do banco é {0}" .format(mao_banco[2]))
+            q += 1
+        elif banco == 4 and maos_jogadores[q] > 1 and maos_jogadores[q] < 8:
+            print('O banco tem {0} pontos. Vamos comprar mais uma carta!' .format(banco))
+            mao_banco += baralho[j * 2 + 3]
+            time.sleep(2)
+            print("A carta do banco é {0}" .format(mao_banco[2]))
+            q += 1
+        elif banco == 5 and maos_jogadores[q] > 3 and maos_jogadores[q] < 8:
+            print('O banco tem {0} pontos. Vamos comprar mais uma carta!' .format(banco))
+            mao_banco += baralho[j * 2 + 3]
+            time.sleep(2)
+            print("A carta do banco é {0}" .format(mao_banco[2]))
+            q += 1
+        elif banco == 6 and maos_jogadores[q] == 6 or maos_jogadores[q] == 7:
+            print('O banco tem {0} pontos. Vamos comprar mais uma carta!' .format(banco))
+            mao_banco += baralho[j * 2 + 3]
+            time.sleep(2)
+            print("A carta do banco é {0}" .format(mao_banco[2]))
+            q += 1
+        if mao_banco[2][0] == 'A':
+            pont3 = 1
+        elif mao_banco[2][0] == '10' or mao_banco[2][0] == 'J' or mao_banco[2][0] == 'Q' or mao_banco[2][0] == 'K':
+            pont3 = 0
+        elif int(mao_banco[2][0]) < 10:
+            pont3 = int(mao_banco[2][0])
+        banco += pont3
+    elif banco < 6 and vencedor != True and terceira_carta == True:
         print('O banco tem {0} pontos. Vamos comprar mais uma carta!' .format(banco))
         mao_banco += baralho[j * 2 + 3]
         time.sleep(2)
